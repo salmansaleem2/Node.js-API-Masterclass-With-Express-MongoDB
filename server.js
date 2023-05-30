@@ -14,19 +14,29 @@ const server = http.createServer((req, res) => {
   // res.setHeader("Content-Type", "application/json");
   // res.setHeader("X-Powered-By", "Node.js");
 
-  res.writeHead(400, {
+  res.writeHead(200, {
     "Content-Type": "application/json",
     "X-Powered-By": "Node.js",
   });
   // res.write("<h1>Hello</h1>");
   // res.write("<h2>Hello Again</h2>");
   // res.end();\
-  // In express we don't send to Stringify it will handle this it self
+  let body = [];
+
+  req
+    .on("data", (chunk) => {
+      body.push(chunk);
+    })
+    .on("end", () => {
+      body = Buffer.concat(body).toString();
+      console.log(body);
+    });
+
   res.end(
     JSON.stringify({
-      success: false,
-      error: "Please add email",
-      data: null,
+      success: true,
+      // error: "Please add email",
+      data: todos,
     })
   );
 });
